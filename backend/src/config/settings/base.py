@@ -53,10 +53,12 @@ class Settings(pydantic_settings.BaseSettings):
     DB_POOL_SIZE: int = decouple.config("DB_POOL_SIZE", cast=int)  # type: ignore
     DB_MAX_OVERFLOW: int = decouple.config("DB_MAX_OVERFLOW", cast=int)  # type: ignore
 
-    class Config(pydantic.BaseConfig):
-        case_sensitive: bool = True
-        env_file: str = f"{str(ROOT_DIR)}/.env"
-        validate_assignment: bool = True
+    # --------------------Class Config-------------------
+    model_config: pydantic.ConfigDict = pydantic.ConfigDict(
+        case_sensitive=True,
+        env_file=f"{str(ROOT_DIR)}/.env",
+        validate_assignment=True,
+    )
 
     @property
     def set_backend_app_attributes(self) -> dict[str, str | bool | None]:
