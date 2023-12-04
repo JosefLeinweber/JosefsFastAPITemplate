@@ -1,4 +1,5 @@
 import datetime
+
 import loguru
 import pydantic
 from password_strength import PasswordPolicy
@@ -28,7 +29,7 @@ class AccountInAuthentication(AccountBase):
         return v
 
 
-class AccountInUpdate(AccountBase):
+class AccountInUpdate(BaseModel):
     username: str | None
     email: pydantic.EmailStr | None
     password: str | None

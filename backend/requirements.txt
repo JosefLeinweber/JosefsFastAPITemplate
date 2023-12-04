@@ -26,6 +26,7 @@ pytest
 pytest-asyncio
 pytest-cov
 pytest-xdist
+pydantic_settings
 SQLAlchemy
 trio
 uvicorn

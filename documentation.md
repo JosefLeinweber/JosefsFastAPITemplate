@@ -1,4 +1,4 @@
-# Documentation of Custome FastAPI project structure
+# Documentation of Custom FastAPI project structure
 
 ## How to run tests
 

@@ -1,16 +1,12 @@
-from src.models.db_tables.account_table import Account
-from src.models.schemas.account_schema import (
-    AccountInAuthentication,
-    AccountOut,
-    AccountInUpdate,
-    AccountOutDelete,
-)
-import sqlalchemy
-import loguru
 import fastapi
+import loguru
+import sqlalchemy
+from sqlalchemy import exc as sqlalchemy_error
 from sqlalchemy.orm import selectinload as sqlalchemy_selectinload
 from sqlalchemy.sql import functions as sqlalchemy_functions
-from sqlalchemy import exc as sqlalchemy_error
+
+from src.models.db_tables.account_table import Account
+from src.models.schemas.account_schema import AccountInAuthentication, AccountInUpdate, AccountOut, AccountOutDelete
 
 
 async def create(account: AccountInAuthentication, db_session) -> Account:
@@ -34,11 +30,7 @@ async def get_all(db_session) -> list[AccountOut]:
 
 async def get_by_id(id: int, db_session) -> AccountOut:
     loguru.logger.info("* getting account by id")
-    select_stmt = (
-        sqlalchemy.select(Account)
-        .options(sqlalchemy_selectinload("*"))
-        .where(Account.id == id)
-    )
+    select_stmt = sqlalchemy.select(Account).options(sqlalchemy_selectinload("*")).where(Account.id == id)
     query = await db_session.execute(statement=select_stmt)
     await db_session.close()
     return query.scalars().first()
@@ -49,14 +41,8 @@ async def update_by_id(id: int, account: AccountInUpdate, db_session) -> Account
     update_data = account.dict(exclude_unset=True)
     current_account = await get_by_id(id=id, db_session=db_session)
     if not current_account:
-        raise fastapi.HTTPException(
-            status_code=404, detail=f"Account with id {id} not found"
-        )
-    update_stmt = (
-        sqlalchemy.update(Account)
-        .where(Account.id == id)
-        .values(updated_at=sqlalchemy_functions.now())
-    )
+        raise fastapi.HTTPException(status_code=404, detail=f"Account with id {id} not found")
+    update_stmt = sqlalchemy.update(Account).where(Account.id == id).values(updated_at=sqlalchemy_functions.now())
 
     for key, value in update_data.items():
         update_stmt = update_stmt.values(**{key: value})
@@ -79,9 +65,7 @@ async def delete_by_id(id: int, db_session) -> bool:
     loguru.logger.info("* deleting account by id")
     accout_to_delete = await get_by_id(id=id, db_session=db_session)
     if not accout_to_delete:
-        raise fastapi.HTTPException(
-            status_code=404, detail=f"Account with id {id} not found"
-        )
+        raise fastapi.HTTPException(status_code=404, detail=f"Account with id {id} not found")
     delete_stmt = sqlalchemy.delete(Account).where(Account.id == id)
     try:
         await db_session.execute(statement=delete_stmt)
@@ -94,21 +78,15 @@ async def delete_by_id(id: int, db_session) -> bool:
         raise fastapi.HTTPException(status_code=500, detail=str(e))
 
 
-async def check_account_details_are_unique(
-    account: AccountInAuthentication, db_session
-) -> None:
+async def check_account_details_are_unique(account: AccountInAuthentication, db_session) -> None:
     loguru.logger.info("* checking if account details are unique")
     email_unique = await _is_email_unique(account.email, db_session)
     username_unique = await _is_username_unique(account.username, db_session)
     await db_session.close()
     if not email_unique:
-        raise fastapi.HTTPException(
-            status_code=409, detail=f"Email {account.email} already in use"
-        )
+        raise fastapi.HTTPException(status_code=409, detail=f"Email {account.email} already in use")
     if not username_unique:
-        raise fastapi.HTTPException(
-            status_code=409, detail=f"Username {account.username} already in use"
-        )
+        raise fastapi.HTTPException(status_code=409, detail=f"Username {account.username} already in use")
 
 
 async def _is_email_unique(email: str, db_session) -> bool:

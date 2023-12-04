@@ -2,13 +2,12 @@ import fastapi
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 
-
+from src.api.endpoints import router
 from src.config.settings.setup import settings
 from src.utility.events.event_handlers import (
     execute_backend_server_event_handler,
     terminate_backend_server_event_handler,
 )
-from src.api.endpoints import router
 
 
 def initialize_application() -> fastapi.FastAPI:

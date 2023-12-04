@@ -1,14 +1,13 @@
-import pydantic
 import pathlib
+
 import decouple
+import pydantic
+import pydantic_settings
+
+ROOT_DIR: pathlib.Path = pathlib.Path(__file__).parent.parent.parent.parent.parent.resolve()
 
 
-ROOT_DIR: pathlib.Path = pathlib.Path(
-    __file__
-).parent.parent.parent.parent.parent.resolve()
-
-
-class Settings(pydantic.BaseSettings):
+class Settings(pydantic_settings.BaseSettings):
     """
     --------------------Description--------------------
     * Base settings for the FastAPI application
@@ -50,7 +49,7 @@ class Settings(pydantic.BaseSettings):
     POSTGRES_DEV_HOST: str = decouple.config("POSTGRES_DEV_HOST", cast=str)  # type: ignore
 
     # ---------------------Databases---------------------
-    POSTGRES_ECHO: bool = decouple.config("POSTGRES_ECHO", cast=bool)  # type: ignore
+    POSTGRES_ECHO: bool = decouple.config("IS_DB_ECHO_LOG", cast=bool)  # type: ignore
     DB_POOL_SIZE: int = decouple.config("DB_POOL_SIZE", cast=int)  # type: ignore
     DB_MAX_OVERFLOW: int = decouple.config("DB_MAX_OVERFLOW", cast=int)  # type: ignore
 

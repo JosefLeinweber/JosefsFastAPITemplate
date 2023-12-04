@@ -1,15 +1,15 @@
-version: '3.8'
+version: "3.8"
 
 services:
   web:
     container_name: web
     restart: on-failure
-    build: 
+    build:
       dockerfile: Dockerfile
       context: ./backend/
 
     env_file:
-      - './.env'
+      - "./.env"
 
     environment:
       - WATCHFILES_FORCE_POLLING=true
@@ -30,7 +30,7 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     restart: always
     env_file:
-      - './.env'
+      - "./.env"
 
     environment:
       - POSTGRES_USER=${POSTGRES_USERNAME}
@@ -43,13 +43,12 @@ services:
     ports:
       - 5431:5432
 
-
   adminer:
     image: adminer
     container_name: db_adminer
     restart: always
     env_file:
-      - './.env'
+      - "./.env"
     environment:
       - POSTGRES_USER=${POSTGRES_USERNAME}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -63,7 +62,5 @@ services:
     depends_on:
       - db_server
 
-
 volumes:
   postgres_data:
-  

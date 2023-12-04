@@ -1,12 +1,10 @@
-import fastapi
 import typing
+
+import fastapi
 import loguru
 
-from src.config.loging import setup_logging
-from src.utility.events.db_events import (
-    initialize_db_connection,
-    terminate_db_connection,
-)
+from src.config.logging import setup_logging
+from src.utility.events.db_events import initialize_db_connection, terminate_db_connection
 
 
 def execute_backend_server_event_handler(app: fastapi.FastAPI) -> typing.Any:

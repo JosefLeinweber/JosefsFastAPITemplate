@@ -1,20 +1,15 @@
 import fastapi
-from src.config.settings.setup import settings, Settings
-from src.models.schemas.account_schema import (
-    AccountOut,
-    AccountInAuthentication,
-    AccountInUpdate,
-    AccountOutDelete,
-)
 from sqlalchemy.ext.asyncio import (
     async_sessionmaker as sqlalchemy_async_sessionmaker,
     AsyncEngine as SQLAlchemyAsyncEngine,
     AsyncSession as SQLAlchemyAsyncSession,
     create_async_engine as create_sqlalchemy_async_engine,
 )
-from src.crud import account_crud
-from src.utility.database.db_session import get_async_session
 
+from src.config.settings.setup import settings, Settings
+from src.crud import account_crud
+from src.models.schemas.account_schema import AccountInAuthentication, AccountInUpdate, AccountOut, AccountOutDelete
+from src.utility.database.db_session import get_async_session
 
 router = fastapi.APIRouter(prefix="/account", tags=["account"])
 
@@ -27,9 +22,7 @@ router = fastapi.APIRouter(prefix="/account", tags=["account"])
 )
 async def create_account(
     new_account: AccountInAuthentication,
-    db_session: sqlalchemy_async_sessionmaker[SQLAlchemyAsyncSession] = fastapi.Depends(
-        get_async_session
-    ),
+    db_session: sqlalchemy_async_sessionmaker[SQLAlchemyAsyncSession] = fastapi.Depends(get_async_session),
 ) -> AccountOut:
     created_account = await account_crud.create(new_account, db_session())
     return AccountOut(**created_account.__dict__)
@@ -42,9 +35,7 @@ async def create_account(
     status_code=200,
 )
 async def get_all_accounts(
-    db_session: sqlalchemy_async_sessionmaker[SQLAlchemyAsyncSession] = fastapi.Depends(
-        get_async_session
-    ),
+    db_session: sqlalchemy_async_sessionmaker[SQLAlchemyAsyncSession] = fastapi.Depends(get_async_session),
 ) -> list[AccountOut]:
     accounts = await account_crud.get_all(db_session())
     return [AccountOut(**account.__dict__) for account in accounts]
@@ -58,17 +49,13 @@ async def get_all_accounts(
 )
 async def get_account_by_id(
     id: int,
-    db_session: sqlalchemy_async_sessionmaker[SQLAlchemyAsyncSession] = fastapi.Depends(
-        get_async_session
-    ),
+    db_session: sqlalchemy_async_sessionmaker[SQLAlchemyAsyncSession] = fastapi.Depends(get_async_session),
 ) -> AccountOut:
     account = await account_crud.get_by_id(id, db_session())
     if account:
         return AccountOut(**account.__dict__)
     else:
-        raise fastapi.HTTPException(
-            status_code=404, detail=f"Account with id {id} not found"
-        )
+        raise fastapi.HTTPException(status_code=404, detail=f"Account with id {id} not found")
 
 
 @router.put(
@@ -80,9 +67,7 @@ async def get_account_by_id(
 async def update_account_by_id(
     id: int,
     update_account: AccountInUpdate,
-    db_session: sqlalchemy_async_sessionmaker[SQLAlchemyAsyncSession] = fastapi.Depends(
-        get_async_session
-    ),
+    db_session: sqlalchemy_async_sessionmaker[SQLAlchemyAsyncSession] = fastapi.Depends(get_async_session),
 ) -> AccountOut:
     account = await account_crud.update_by_id(id, update_account, db_session())
     if account:
@@ -99,9 +84,7 @@ async def update_account_by_id(
 )
 async def delete_account_by_id(
     id: int,
-    db_session: sqlalchemy_async_sessionmaker[SQLAlchemyAsyncSession] = fastapi.Depends(
-        get_async_session
-    ),
+    db_session: sqlalchemy_async_sessionmaker[SQLAlchemyAsyncSession] = fastapi.Depends(get_async_session),
 ) -> fastapi.Response:
     is_deleted = await account_crud.delete_by_id(id, db_session())
     return AccountOutDelete(is_deleted=is_deleted)

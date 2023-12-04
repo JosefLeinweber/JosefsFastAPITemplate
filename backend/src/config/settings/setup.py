@@ -12,10 +12,10 @@ class SettingsFactory:
         self.environment = environment
 
     def __call__(self) -> Settings:
-        if self.environment == "dev":
+        if self.environment == "DEV":
             return DevelopmentSettings()
 
-        if self.environment == "prod":
+        if self.environment == "PROD":
             return ProductionSettings()
 
         else:
@@ -24,9 +24,7 @@ class SettingsFactory:
 
 @lru_cache()
 def get_settings() -> Settings:
-    return SettingsFactory(
-        environment=decouple.config("ENVIRONMENT", default="dev", cast=str)
-    )()
+    return SettingsFactory(environment=decouple.config("ENVIRONMENT", default="dev", cast=str))()
 
 
 settings: Settings = get_settings()

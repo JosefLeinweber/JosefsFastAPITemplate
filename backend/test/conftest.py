@@ -1,5 +1,6 @@
 import pytest
 from httpx import AsyncClient
+
 from src.main import initialize_application
 
 
@@ -10,8 +11,6 @@ def anyio_backend():
 
 @pytest.fixture(scope="session")
 async def async_client():
-    async with AsyncClient(
-        app=initialize_application(), base_url="http://test"
-    ) as async_client:
+    async with AsyncClient(app=initialize_application(), base_url="http://test") as async_client:
         print("Client is ready")
         yield async_client
