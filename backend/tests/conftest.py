@@ -1,10 +1,12 @@
 import asyncio
+import os
 
-import asgi_lifespan
 import pytest
 from httpx import AsyncClient
 
 from src.main import initialize_application
+
+os.environ["ENVIRONMENT"] = "STAGING"
 
 
 @pytest.fixture(scope="session")
@@ -22,8 +24,17 @@ def anyio_backend():
 
 
 @pytest.fixture(scope="session")
+def initalize_test_app():
+    try:
+        test_app = initialize_application()
+        return test_app
+    except Exception as e:
+        raise e
+
+
+@pytest.fixture(scope="session")
 @pytest.mark.asyncio
-async def async_client(event_loop) -> AsyncClient:
-    async with AsyncClient(app=initialize_application(), base_url="http://test") as async_client:
+async def async_client(event_loop, initalize_test_app) -> AsyncClient:
+    async with AsyncClient(app=initalize_test_app, base_url="http://test") as async_client:
         print("Client is ready")
         yield async_client
