@@ -1,7 +1,5 @@
-# Documentation of Custom FastAPI project structure
+# Notes about the project
 
-## How to run tests
+## How to run the tests
 
-1. Start up the database server with ```docker-compose up db_server```
-
-2. Run the tests with ```docker-compose run web pytest .```
+```docker exec -it <container_name> pytest```
