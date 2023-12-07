@@ -13,15 +13,17 @@ services:
 
     environment:
       - WATCHFILES_FORCE_POLLING=true
+      - ENVIRONMENT=DEV
 
     volumes:
       - ./backend/src/:/usr/backend/src/
-      - ./backend/test:/usr/backend/test/
+      - ./backend/tests/:/usr/backend/tests/
     ports:
       - 8001:8000
 
     depends_on:
       - db_server
+      - test_db_server
 
   db_server:
     container_name: db_server
@@ -46,6 +48,8 @@ services:
   test_db_server:
     container_name: test_db_server
     image: postgres:latest
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data/
     restart: always
     env_file:
       - "./.env"
@@ -80,5 +84,25 @@ services:
     depends_on:
       - db_server
 
+  test_adminer:
+    image: adminer
+    container_name: test_db_adminer
+    restart: always
+    env_file:
+      - "./.env"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_TEST_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DB=${POSTGRES_TEST_DB}
+    expose:
+      - 8080
+    ports:
+      - 8082:8080
+    depends_on:
+      - test_db_server
+
 volumes:
   postgres_data:
+  postgres_test_data:

@@ -25,3 +25,23 @@ async def test_create_account(async_client: AsyncClient):
     assert response.json()["isAdmin"] is False
     assert response.json()["isLoggedIn"] is True
     assert response.json()["isVerified"] is False
+
+
+@pytest.mark.asyncio
+async def test_create_account_invalid_username(async_client: AsyncClient):
+    response = await async_client.post(
+        "/v1/account",
+        json={"username": "test", "email": "test1@gnx.de", "password": "Test1234!"},  # username already exists
+    )
+    loguru.logger.debug(response.json())
+    assert response.status_code == 409
+
+
+@pytest.mark.asyncio
+async def test_create_account_invalid_email(async_client: AsyncClient):
+    response = await async_client.post(
+        "/v1/account",
+        json={"username": "test1", "email": "test@gmx.de", "password": "Test1234!"},  # email already exists
+    )
+    loguru.logger.debug(response.json())
+    assert response.status_code == 409
