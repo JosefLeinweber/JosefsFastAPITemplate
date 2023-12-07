@@ -29,7 +29,7 @@ class Database:
         self.framework: str = "Asynchronous SQLAlchemy"
         self._async_engine: SQLAlchemyAsyncEngine | None = None
         self._async_session: sqlalchemy_async_sessionmaker[SQLAlchemyAsyncSession] | None = None
-        self.postgres_uri: str = f"{settings.POSTGRES_SCHEMA}://{settings.POSTGRES_USERNAME}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_DEV_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_DEV_DB}"
+        self.postgres_uri: str = f"{settings.POSTGRES_SCHEMA}://{settings.POSTGRES_USERNAME}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}"
 
     @property
     def async_engine(self) -> SQLAlchemyAsyncEngine:

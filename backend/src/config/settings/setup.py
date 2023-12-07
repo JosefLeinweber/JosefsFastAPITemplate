@@ -5,6 +5,7 @@ import decouple
 from src.config.settings.base import Settings
 from src.config.settings.development import DevelopmentSettings
 from src.config.settings.production import ProductionSettings
+from src.config.settings.staging import StagingSettings
 
 
 class SettingsFactory:
@@ -17,6 +18,9 @@ class SettingsFactory:
 
         if self.environment == "PROD":
             return ProductionSettings()
+
+        if self.environment == "STAGING":
+            return StagingSettings()
 
         else:
             raise ValueError(f"Invalid environment: {self.environment}")

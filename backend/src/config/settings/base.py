@@ -43,20 +43,22 @@ class Settings(pydantic_settings.BaseSettings):
     # ---------------------Postgres---------------------
     POSTGRES_USERNAME: str = decouple.config("POSTGRES_USERNAME", cast=str)  # type: ignore
     POSTGRES_PASSWORD: str = decouple.config("POSTGRES_PASSWORD", cast=str)  # type: ignore
-    POSTGRES_DEV_DB: str = decouple.config("POSTGRES_DEV_DB", cast=str)  # type: ignore
+    POSTGRES_DB: str = decouple.config("POSTGRES_DEV_DB", cast=str)  # type: ignore
     POSTGRES_PORT: int = decouple.config("POSTGRES_PORT", cast=int)  # type: ignore
     POSTGRES_SCHEMA: str = decouple.config("POSTGRES_SCHEMA", cast=str)  # type: ignore
-    POSTGRES_DEV_HOST: str = decouple.config("POSTGRES_DEV_HOST", cast=str)  # type: ignore
+    POSTGRES_HOST: str = decouple.config("POSTGRES_DEV_HOST", cast=str)  # type: ignore
 
     # ---------------------Databases---------------------
     POSTGRES_ECHO: bool = decouple.config("IS_DB_ECHO_LOG", cast=bool)  # type: ignore
     DB_POOL_SIZE: int = decouple.config("DB_POOL_SIZE", cast=int)  # type: ignore
     DB_MAX_OVERFLOW: int = decouple.config("DB_MAX_OVERFLOW", cast=int)  # type: ignore
 
-    class Config(pydantic.BaseConfig):
-        case_sensitive: bool = True
-        env_file: str = f"{str(ROOT_DIR)}/.env"
-        validate_assignment: bool = True
+    # --------------------Class Config-------------------
+    model_config: pydantic.ConfigDict = pydantic.ConfigDict(
+        case_sensitive=True,
+        env_file=f"{str(ROOT_DIR)}/.env",
+        validate_assignment=True,
+    )
 
     @property
     def set_backend_app_attributes(self) -> dict[str, str | bool | None]:

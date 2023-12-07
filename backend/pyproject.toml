@@ -1,5 +1,5 @@
 [project]
-name = "FAP Stack Template"
+name = "FAP-Stack-Template"
 version = "0.0.1"
 description = "A comprehensive template to start a real-world quality project."
 authors = [{ name = "Josef Leinweber", email = "josef.leinweber@code.berlin" }]
@@ -106,3 +106,6 @@ addopts = '''
     --numprocesses=auto
     --asyncio-mode=auto
 '''
+
+[tool.coverage.run]
+source = ["src"] # Specify the source directory or directories
