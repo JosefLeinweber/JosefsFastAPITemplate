@@ -16,19 +16,16 @@ jobs:
         run: |
           echo "${{ secrets.ENV_VALUES }}" > .env
 
-      - name: Print .env file path
+      - name: Debugging
         run: |
-          echo "Path to .env file: $(pwd)/.env"
-          echo "First value in .env file: $(grep -oP '^[^#]\S+' .env | head -n 1)"
+          pwd
+          ls -la
 
-      - name: Check if .env file exists
-        run: |
-          if [ -e .env ]; then
-            echo ".env file exists."
-          else
-            echo "Error: .env file not found."
-            exit 1
-          fi
+      - name: Check file permissions
+        run: stat .env
+
+      - name: Print .env file content
+        run: cat .env
 
       - uses: actions/checkout@v3
       - name: Build with docker-compose
