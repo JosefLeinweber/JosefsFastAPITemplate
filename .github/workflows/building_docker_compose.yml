@@ -16,6 +16,10 @@ jobs:
         run: |
           echo "${{ secrets.ENV_VALUES }}" > .env
 
+      - name: Print .env file path
+        run: |
+          echo "Path to .env file: $(pwd)/.env"
+          echo "First value in .env file: $(grep -oP '^[^#]\S+' .env | head -n 1)"
       - uses: actions/checkout@v3
       - name: Build with docker-compose
         run: docker-compose build
