@@ -1,5 +1,5 @@
 # Pull official latest Python Docker image (Pulished with version 3.10.9)
-FROM python:3.11.1-slim-bullseye
+FROM python:3.10.12-slim-bullseye
 
 # Set the working directory
 WORKDIR /usr/backend
