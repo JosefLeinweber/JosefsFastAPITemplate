@@ -14,18 +14,22 @@ jobs:
     steps:
       - name: Create env file
         run: |
-          echo "${{ secrets.ENV_VALUES }}" > .env
+          # Get the values from the secret and format them as KEY=value lines
+          echo "${{ secrets.ENV_VALUES }}" | tr '\n' '\n' > .env
 
-      - name: Debugging
+      - name: Print .env file path and content
         run: |
-          pwd
-          ls -la
+          echo "Path to .env file: $(pwd)/.env"
+          cat .env
 
-      - name: Check file permissions
-        run: stat .env
-
-      - name: Print .env file content
-        run: cat .env
+      - name: Check if .env file exists
+        run: |
+          if [ -e .env ]; then
+            echo ".env file exists."
+          else
+            echo "Error: .env file not found."
+            exit 1
+          fi
 
       - uses: actions/checkout@v3
       - name: Build with docker-compose
