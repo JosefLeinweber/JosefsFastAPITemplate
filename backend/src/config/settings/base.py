@@ -55,9 +55,7 @@ class Settings(pydantic_settings.BaseSettings):
 
     # --------------------Class Config-------------------
     model_config: pydantic.ConfigDict = pydantic.ConfigDict(
-        case_sensitive=True,
-        env_file=f"{str(ROOT_DIR)}/.env",
-        validate_assignment=True,
+        case_sensitive=True, env_file=f"{str(ROOT_DIR)}/.env", validate_assignment=True, extra="allow"
     )
 
     @property
