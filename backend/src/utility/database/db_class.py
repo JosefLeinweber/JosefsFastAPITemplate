@@ -6,7 +6,6 @@ from sqlalchemy.ext.asyncio import (
     AsyncSession as SQLAlchemyAsyncSession,
     create_async_engine as create_sqlalchemy_async_engine,
 )
-from sqlalchemy.pool import QueuePool as SQLAlchemyQueuePool
 
 from src.config.settings.setup import settings
 
@@ -29,7 +28,9 @@ class Database:
         self.framework: str = "Asynchronous SQLAlchemy"
         self._async_engine: SQLAlchemyAsyncEngine | None = None
         self._async_session: sqlalchemy_async_sessionmaker[SQLAlchemyAsyncSession] | None = None
-        self.postgres_uri: str = f"{settings.POSTGRES_SCHEMA}://{settings.POSTGRES_USERNAME}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}"
+        self.postgres_uri: str = (
+            f"{settings.POSTGRES_SCHEMA}://{settings.POSTGRES_USERNAME}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}"
+        )
 
     @property
     def async_engine(self) -> SQLAlchemyAsyncEngine:
@@ -48,7 +49,6 @@ class Database:
             echo=settings.POSTGRES_ECHO,
             pool_size=settings.DB_POOL_SIZE,
             max_overflow=settings.DB_MAX_OVERFLOW,
-            poolclass=SQLAlchemyQueuePool,
         )
 
     @property

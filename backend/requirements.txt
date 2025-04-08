@@ -31,3 +31,4 @@ SQLAlchemy
 trio
 uvicorn
 password_strength
+psycopg[binary,pool]

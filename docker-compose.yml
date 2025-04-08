@@ -22,11 +22,11 @@ services:
       - 8001:8000
 
     depends_on:
-      - db_server
-      - test_db_server
+      - jfat_dev_db_host
+      - jfat_test_db_host
 
-  db_server:
-    container_name: db_server
+  jfat_dev_db_host:
+    container_name: jfat_dev_db_host
     image: postgres:latest
     volumes:
       - postgres_data:/var/lib/postgresql/data/
@@ -45,8 +45,8 @@ services:
     ports:
       - 5431:5432
 
-  test_db_server:
-    container_name: test_db_server
+  jfat_test_db_host:
+    container_name: jfat_test_db_host
     image: postgres:latest
     volumes:
       - postgres_test_data:/var/lib/postgresql/data/
@@ -82,7 +82,7 @@ services:
     ports:
       - 8081:8080
     depends_on:
-      - db_server
+      - jfat_dev_db_host
 
   test_adminer:
     image: adminer
@@ -101,7 +101,7 @@ services:
     ports:
       - 8082:8080
     depends_on:
-      - test_db_server
+      - jfat_test_db_host
 
 volumes:
   postgres_data:
