@@ -10,7 +10,7 @@ async def test_get_all_accounts(async_client: AsyncClient):
 
 
 @pytest.mark.asyncio
-async def test_create_account(async_client: AsyncClient):
+async def test_create_account_successful(async_client: AsyncClient):
     response = await async_client.post(
         "/v1/account",
         json={"username": "test", "email": "test@gmx.de", "password": "Test1234!"},

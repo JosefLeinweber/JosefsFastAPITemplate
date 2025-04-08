@@ -1,6 +1,7 @@
 from functools import lru_cache
 
 import decouple
+import loguru
 
 from src.config.settings.base import Settings
 from src.config.settings.development import DevelopmentSettings
@@ -11,6 +12,7 @@ from src.config.settings.staging import StagingSettings
 class SettingsFactory:
     def __init__(self, environment: str):
         self.environment = environment
+        loguru.logger.debug(f"SettingsFactory initialized with environment: {self.environment}")
 
     def __call__(self) -> Settings:
         if self.environment == "DEV":

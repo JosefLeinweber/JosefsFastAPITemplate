@@ -63,4 +63,30 @@ JosefsFastAPITemplate is a boilerplate repository designed to help developers qu
 - **Dev DB Adminer**: Access the database admin interface at        `http://localhost:8081`.
 - **Test DB Adminer**: Access the test database admin interface at  `http://localhost:8082`.
 
+### Running Tests in Docker
+
+1. Ensure the Docker containers are running:
+    ```bash
+    docker-compose up -d
+    ```
+
+2. Run the tests inside the Docker container:
+    ```bash
+    docker exec -it <container_name> pytest
+    ```
+
+### Using Pre-commit
+
+Pre-commit helps to ensure that your code meets certain standards before committing.
+Pre-commit hooks can automatically format your code, check for linting errors, and run tests before you commit changes to your repository.
+
+1. Install pre-commit hooks:
+    ```bash
+    pre-commit install
+    ```
+2. Run pre-commit manually:
+    ```bash
+    pre-commit run --all-files
+    ```
+
 ## Folder Structure

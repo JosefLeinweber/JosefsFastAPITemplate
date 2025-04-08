@@ -31,17 +31,25 @@ async def get_all(db_session) -> list[AccountOut]:
 async def get_by_id(id: int, db_session) -> AccountOut:
     loguru.logger.info("* getting account by id")
     select_stmt = sqlalchemy.select(Account).options(sqlalchemy_selectinload("*")).where(Account.id == id)
-    query = await db_session.execute(statement=select_stmt)
-    await db_session.close()
-    return query.scalars().first()
+    try:
+        query = await db_session.execute(statement=select_stmt)
+        await db_session.close()
+        return query.scalars().first()
+
+    except Exception as e:
+        await db_session.close()
+        raise fastapi.HTTPException(status_code=404, detail=str(e))
 
 
+# TODO: ensure that this function works
 async def update_by_id(id: int, account: AccountInUpdate, db_session) -> AccountOut:
     loguru.logger.info("* updating account by id")
     update_data = account.dict(exclude_unset=True)
+
     current_account = await get_by_id(id=id, db_session=db_session)
     if not current_account:
         raise fastapi.HTTPException(status_code=404, detail=f"Account with id {id} not found")
+
     update_stmt = sqlalchemy.update(Account).where(Account.id == id).values(updated_at=sqlalchemy_functions.now())
 
     for key, value in update_data.items():
@@ -50,10 +58,9 @@ async def update_by_id(id: int, account: AccountInUpdate, db_session) -> Account
     try:
         await db_session.execute(statement=update_stmt)
         await db_session.commit()
-        await db_session.refresh(instance=current_account)
         await db_session.close()
 
-        return current_account
+        return await get_by_id(id=id, db_session=db_session)
 
     except sqlalchemy_error.DatabaseError as e:
         await db_session.rollback()

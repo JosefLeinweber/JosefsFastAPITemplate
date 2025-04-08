@@ -1,4 +1,4 @@
-# Pull official latest Python Docker image (Pulished with version 3.10.9)
+# Pull official latest Python Docker image (Published with version 3.10.9)
 FROM python:3.11.1-slim-bullseye
 
 # Set the working directory
