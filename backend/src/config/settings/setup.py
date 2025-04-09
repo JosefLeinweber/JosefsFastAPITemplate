@@ -1,7 +1,6 @@
 import os
 from functools import lru_cache
 
-import decouple
 import loguru
 
 from src.config.settings.base import Settings
