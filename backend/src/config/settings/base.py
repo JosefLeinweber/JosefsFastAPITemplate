@@ -43,10 +43,8 @@ class Settings(pydantic_settings.BaseSettings):
     # ---------------------Postgres---------------------
     POSTGRES_USERNAME: str = decouple.config("POSTGRES_USERNAME", cast=str)  # type: ignore
     POSTGRES_PASSWORD: str = decouple.config("POSTGRES_PASSWORD", cast=str)  # type: ignore
-    POSTGRES_DB: str = decouple.config("POSTGRES_DEV_DB", cast=str)  # type: ignore
     POSTGRES_PORT: int = decouple.config("POSTGRES_PORT", cast=int)  # type: ignore
     POSTGRES_SCHEMA: str = decouple.config("POSTGRES_SCHEMA", cast=str)  # type: ignore
-    POSTGRES_HOST: str = decouple.config("POSTGRES_DEV_HOST", cast=str)  # type: ignore
 
     # ---------------------Databases---------------------
     POSTGRES_ECHO: bool = decouple.config("IS_DB_ECHO_LOG", cast=bool)  # type: ignore

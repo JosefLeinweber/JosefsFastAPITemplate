@@ -1,40 +1,29 @@
-import asyncio
-import os
+from typing import AsyncGenerator
 
-import pytest
+from asgi_lifespan import LifespanManager
+from fastapi import FastAPI
 from httpx import AsyncClient
+from pytest import fixture
 
 from src.main import initialize_application
 
-os.environ["ENVIRONMENT"] = "STAGING"
+
+@fixture(name="test_app")
+def test_app() -> FastAPI:
+    return initialize_application()
 
 
-@pytest.fixture(scope="session")
-def event_loop():
-    """Overrides pytest default function scoped event loop"""
-    policy = asyncio.get_event_loop_policy()
-    loop = policy.new_event_loop()
-    yield loop
-    loop.close()
+@fixture(name="initialize_test_application")
+async def initialize_test_application(test_app: FastAPI) -> AsyncGenerator[FastAPI, None]:
+    async with LifespanManager(test_app):
+        yield test_app
 
 
-@pytest.fixture(scope="session")
-def anyio_backend():
-    return "asyncio"
-
-
-@pytest.fixture(scope="session")
-def initalize_test_app():
-    try:
-        test_app = initialize_application()
-        return test_app
-    except Exception as e:
-        raise e
-
-
-@pytest.fixture(scope="session")
-@pytest.mark.asyncio
-async def async_client(event_loop, initalize_test_app) -> AsyncClient:
-    async with AsyncClient(app=initalize_test_app, base_url="http://test") as async_client:
-        print("Client is ready")
-        yield async_client
+@fixture(name="async_client")
+async def async_client(initialize_test_application: FastAPI) -> AsyncGenerator[AsyncClient, None]:
+    async with AsyncClient(
+        app=initialize_test_application,
+        base_url="http://testserver",
+        headers={"Content-Type": "application/json"},
+    ) as client:
+        yield client

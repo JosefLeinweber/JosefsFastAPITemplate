@@ -13,7 +13,6 @@ services:
 
     environment:
       - WATCHFILES_FORCE_POLLING=true
-      - ENVIRONMENT=DEV
 
     volumes:
       - ./backend/src/:/usr/backend/src/

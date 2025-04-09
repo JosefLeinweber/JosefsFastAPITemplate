@@ -12,7 +12,6 @@ from src.config.settings.staging import StagingSettings
 class SettingsFactory:
     def __init__(self, environment: str):
         self.environment = environment
-        loguru.logger.debug(f"SettingsFactory initialized with environment: {self.environment}")
 
     def __call__(self) -> Settings:
         if self.environment == "DEV":
@@ -30,7 +29,7 @@ class SettingsFactory:
 
 @lru_cache()
 def get_settings() -> Settings:
-    return SettingsFactory(environment=decouple.config("ENVIRONMENT", default="dev", cast=str))()
+    return SettingsFactory(environment=decouple.config("ENVIRONMENT", default="DEV", cast=str))()
 
 
 settings: Settings = get_settings()
