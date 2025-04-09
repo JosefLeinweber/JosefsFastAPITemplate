@@ -22,7 +22,7 @@ class Settings(pydantic_settings.BaseSettings):
     TIMEZONE: str = "UTC"
     DESCRIPTION: str | None = None
     DEBUG: bool = decouple.config("DEBUG", cast=bool)  # type: ignore
-    ENVIRONMENT: str = decouple.config("ENVIRONMENT", cast=str)  # type: ignore
+    # ENVIRONMENT: str = decouple.config("ENVIRONMENT", cast=str)  # type: ignore
     TESTING: bool = decouple.config("TESTING", cast=bool)  # type: ignore
     SERVER_HOST: str = decouple.config("BACKEND_SERVER_HOST", cast=str)  # type: ignore
     SERVER_PORT: int = decouple.config("BACKEND_SERVER_PORT", cast=int)  # type: ignore

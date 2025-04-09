@@ -47,8 +47,10 @@ JosefsFastAPITemplate is a boilerplate repository designed to help developers qu
 
 2. Start the services:
     ```bash
-    docker-compose up
+    ENVIRONMENT=DEV docker-compose up
     ```
+
+    This will start the FastAPI application and the database services defined in the `docker-compose.yml` file in a DEV environment.
 
 3. Stop the services:
     To stop the running containers, press `CTRL+C` or run:
@@ -65,9 +67,9 @@ JosefsFastAPITemplate is a boilerplate repository designed to help developers qu
 
 ### Running Tests in Docker
 
-1. Ensure the Docker containers are running:
+1. Ensure the Docker containers are running in STAGING environment:
     ```bash
-    docker-compose up -d
+    ENVIRONMENT=STAGING docker-compose up
     ```
 
 2. Run the tests inside the Docker container:

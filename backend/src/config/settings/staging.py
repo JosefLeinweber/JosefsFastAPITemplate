@@ -5,7 +5,6 @@ from src.config.settings.base import Settings
 
 class StagingSettings(Settings):
     DESCRIPTION: str = "Staging / Testing Settings | Modified FastAPI Template"
-    ENVIRONMENT: str = "STAGING"
     DEBUG: bool = True
     TESTING: bool = True
     POSTGRES_DB: str = decouple.config("POSTGRES_TEST_DB", cast=str)  # type: ignore
