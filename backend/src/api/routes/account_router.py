@@ -80,10 +80,9 @@ async def update_account_by_id(
     db_session: sqlalchemy_async_sessionmaker[SQLAlchemyAsyncSession] = fastapi.Depends(get_async_session),
 ) -> AccountOut:
     account = await account_crud.update_by_id(id, update_account, db_session())
-    if account:
-        return AccountOut(**account.__dict__)
-    else:
-        raise fastapi.HTTPException(status_code=500, detail=f"Internal server error")
+    if not account:
+        raise fastapi.HTTPException(status_code=404, detail="Account not found")
+    return AccountOut(**account.__dict__)
 
 
 @router.delete(

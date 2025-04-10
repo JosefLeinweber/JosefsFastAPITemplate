@@ -2,14 +2,14 @@
 get async sesison through function
 """
 
-from typing import Generator
+from typing import AsyncGenerator
 
 import loguru
 
 from src.utility.database.db_class import db
 
 
-async def get_async_session() -> Generator:  # type: ignore
+async def get_async_session() -> AsyncGenerator:  # type: ignore
     try:
         yield db.async_session
     except Exception as exception:
