@@ -2,6 +2,7 @@ import fastapi
 import loguru
 import sqlalchemy
 from sqlalchemy import exc as sqlalchemy_error
+from sqlalchemy.ext.asyncio import AsyncSession as SQLAlchemyAsyncSession
 from sqlalchemy.orm import selectinload as sqlalchemy_selectinload
 from sqlalchemy.sql import functions as sqlalchemy_functions
 
@@ -9,7 +10,7 @@ from src.models.db_tables.account_table import Account
 from src.models.schemas.account_schema import AccountInAuthentication, AccountInUpdate, AccountOut, AccountOutDelete
 
 
-async def create(account: AccountInAuthentication, db_session) -> Account:
+async def create(account: AccountInAuthentication, db_session: SQLAlchemyAsyncSession) -> Account:
     loguru.logger.info("* creating new account")
     # TODO: dict() is DeprecationWarning
     new_account = Account(**account.dict())
@@ -28,7 +29,7 @@ async def create(account: AccountInAuthentication, db_session) -> Account:
         raise fastapi.HTTPException(status_code=500, detail=str(e))
 
 
-async def get_all(db_session) -> list[AccountOut]:
+async def get_all(db_session: SQLAlchemyAsyncSession) -> list[AccountOut]:
     loguru.logger.info("* fetching all accounts")
     select_stmt = sqlalchemy.select(Account).options(sqlalchemy_selectinload("*"))
 
@@ -41,7 +42,7 @@ async def get_all(db_session) -> list[AccountOut]:
         raise fastapi.HTTPException(status_code=500, detail=str(e))
 
 
-async def get_by_id(id: int, db_session) -> AccountOut:
+async def get_by_id(id: int, db_session: SQLAlchemyAsyncSession) -> AccountOut:
     loguru.logger.info("* fetching account by id")
     select_stmt = sqlalchemy.select(Account).options(sqlalchemy_selectinload("*")).where(Account.id == id)
     try:
@@ -54,7 +55,7 @@ async def get_by_id(id: int, db_session) -> AccountOut:
 
 
 # TODO: ensure that this function works
-async def update_by_id(id: int, account: AccountInUpdate, db_session) -> AccountOut:
+async def update_by_id(id: int, account: AccountInUpdate, db_session: SQLAlchemyAsyncSession) -> AccountOut:
     loguru.logger.info("* updating account by id")
     update_data = account.dict(exclude_unset=True)
 
@@ -80,7 +81,7 @@ async def update_by_id(id: int, account: AccountInUpdate, db_session) -> Account
         raise fastapi.HTTPException(status_code=500, detail=str(e))
 
 
-async def delete_by_id(id: int, db_session) -> bool:
+async def delete_by_id(id: int, db_session: SQLAlchemyAsyncSession) -> bool:
     loguru.logger.info("* deleting account by id")
     accout_to_delete = await get_by_id(id=id, db_session=db_session)
     if not accout_to_delete:
@@ -97,7 +98,9 @@ async def delete_by_id(id: int, db_session) -> bool:
         raise fastapi.HTTPException(status_code=500, detail=str(e))
 
 
-async def _check_account_details_are_unique(account: AccountInAuthentication, db_session) -> None:
+async def _check_account_details_are_unique(
+    account: AccountInAuthentication, db_session: SQLAlchemyAsyncSession
+) -> None:
     loguru.logger.info("* checking if account details are unique")
     email_unique = await _is_email_unique(account.email, db_session)
     username_unique = await _is_username_unique(account.username, db_session)
@@ -107,14 +110,14 @@ async def _check_account_details_are_unique(account: AccountInAuthentication, db
         raise fastapi.HTTPException(status_code=409, detail=f"Username {account.username} already in use")
 
 
-async def _is_email_unique(email: str, db_session) -> bool:
+async def _is_email_unique(email: str, db_session: SQLAlchemyAsyncSession) -> bool:
     loguru.logger.info("* checking if email is unique")
     select_stmt = sqlalchemy.select(Account).where(Account.email == email)
     query = await db_session.execute(statement=select_stmt)
     return query.scalars().first() is None
 
 
-async def _is_username_unique(username: str, db_session) -> bool:
+async def _is_username_unique(username: str, db_session: SQLAlchemyAsyncSession) -> bool:
     loguru.logger.info("* checking if username is unique")
     select_stmt = sqlalchemy.select(Account).where(Account.username == username)
     query = await db_session.execute(statement=select_stmt)
