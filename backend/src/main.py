@@ -1,4 +1,5 @@
 import fastapi
+import loguru
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -12,6 +13,7 @@ from src.utility.events.event_handlers import (
 
 def initialize_application() -> fastapi.FastAPI:
     app = fastapi.FastAPI(**settings.set_backend_app_attributes)
+    loguru.logger.debug(f"App Settings description: {settings.DESCRIPTION}")
 
     app.add_middleware(
         CORSMiddleware,

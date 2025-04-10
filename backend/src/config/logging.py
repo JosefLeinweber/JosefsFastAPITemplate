@@ -3,6 +3,7 @@ import sys
 import loguru
 
 
+# TODO: add option for production logging
 def setup_logging() -> None:
     loguru.logger.remove(handler_id=None)
     dev_log_format = (

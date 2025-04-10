@@ -1,6 +1,7 @@
+import os
 from functools import lru_cache
 
-import decouple
+import loguru
 
 from src.config.settings.base import Settings
 from src.config.settings.development import DevelopmentSettings
@@ -28,7 +29,9 @@ class SettingsFactory:
 
 @lru_cache()
 def get_settings() -> Settings:
-    return SettingsFactory(environment=decouple.config("ENVIRONMENT", default="dev", cast=str))()
+    environment = os.getenv("ENVIRONMENT", "null").upper()
+    loguru.logger.debug(f"Environment: {environment}")
+    return SettingsFactory(environment)()
 
 
 settings: Settings = get_settings()

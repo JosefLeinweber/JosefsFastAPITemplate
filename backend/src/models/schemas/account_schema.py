@@ -32,7 +32,6 @@ class AccountInAuthentication(AccountBase):
 class AccountInUpdate(BaseModel):
     username: str | None
     email: pydantic.EmailStr | None
-    password: str | None
 
 
 class AccountOut(AccountBase):
