@@ -30,13 +30,14 @@ jobs:
           echo "Generating .env file..."
           touch .env
 
-      - name: Add repository variables to .env file
+      - name: Add environment variables from repository secret to .env file
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ENV_FILE: ${{ secrets.ENV_FILE }}
         run: |
-          echo "Generating .env file from repository variables..."
-          gh variable list --json name,value | jq -r '.[] | "\(.name)=\(.value)"' > .env
-          echo ".env file generated."
+          echo ".env file from repository variables..."
+          echo "ENV_FILE=${{ secrets.ENV_FILE }}" >> .env
+          cat .env
 
 
       - name: Build remaining images with docker compose
