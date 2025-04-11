@@ -57,7 +57,7 @@ jobs:
         
       - name: Run tests
         run: |
-          docker exec -it $(docker ps -qf "name=backend") pytest --disable-warnings -v tests/ > result.log
+          docker exec -it web pytest --disable-warnings -v tests/ > result.log
           if grep -q "failed" result.log; then
             echo "Tests failed. Exiting."
             exit 1
