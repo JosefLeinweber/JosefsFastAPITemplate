@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: FAILING
+      - name: FAILING!
         run: exit 1
 
       - name: Checkout repository
