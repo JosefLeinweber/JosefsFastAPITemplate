@@ -64,6 +64,9 @@ jobs:
           else
             echo "Tests passed."
           fi
+          echo "Test results:"
+          cat result.log
+
           rm result.log
         
       - name: Stop dockercompose
