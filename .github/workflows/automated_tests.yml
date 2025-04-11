@@ -15,8 +15,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: FAILING!
-        run: exit 1
 
       - name: Checkout repository
         uses: actions/checkout@v3
