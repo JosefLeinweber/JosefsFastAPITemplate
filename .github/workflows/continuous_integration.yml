@@ -13,7 +13,7 @@ on:
     
 jobs:
   build:
-    name: 'Build and Start docker-compose'
+    name: 'Build and Start docker compose'
     runs-on: ubuntu-latest
 
     steps:
@@ -23,11 +23,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Build remaining images with docker-compose
-        run: docker-compose build
+      - name: Build remaining images with docker compose
+        run: docker compose build
 
-      - name: Start docker-compose
-        run: ENVIRONMENT=STAGING docker-compose up
+      - name: Start docker compose
+        run: ENVIRONMENT=STAGING docker compose up
 
       - name: Wait for services to be healthy
         run: |
@@ -61,6 +61,6 @@ jobs:
           # delete the result.log file after the tests are done
           rm result.log
         
-      - name: Stop docker-compose
+      - name: Stop dockercompose
         if: always()
-        run: docker-compose down
+        run: docker compose down
