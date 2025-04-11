@@ -16,9 +16,7 @@ jobs:
     name: 'Build and Start docker compose'
     runs-on: ubuntu-latest
 
-    permissions:
-      actions: read
-      contents: write
+    permissions: write-all
 
     steps:
       - name: Checkout repository
