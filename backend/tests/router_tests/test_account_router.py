@@ -165,4 +165,4 @@ async def test_delete_account_by_id_not_found(async_client: AsyncClient):
     # THEN: I should get a 404 Not Found response
     assert response.status_code == 404
     assert "not found" in response.json()["detail"]
-    assert True == False  # force fail
+    assert True == False
