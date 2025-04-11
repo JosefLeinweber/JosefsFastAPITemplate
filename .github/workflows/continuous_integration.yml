@@ -30,10 +30,10 @@ jobs:
         run: echo "${{ secrets.ENV_VARIABLES }}" > .env
 
       - name: Build docker compose
-        run: docker compose build -q
+        run: docker compose build 
 
       - name: Start docker compose
-        run: ENVIRONMENT=STAGING docker compose up
+        run: ENVIRONMENT=STAGING docker compose up -d --wait --wait-timeout 60
 
       - name: Wait for services to be healthy
         run: |
