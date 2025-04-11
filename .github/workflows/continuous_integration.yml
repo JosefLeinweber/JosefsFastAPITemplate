@@ -40,10 +40,10 @@ jobs:
 
 
       - name: Build remaining images with docker compose
-        run: docker compose build --env-file .env
+        run: docker compose build
 
       - name: Start docker compose
-        run: ENVIRONMENT=STAGING docker compose up --env-file .env
+        run: ENVIRONMENT=STAGING docker compose up
 
       - name: Wait for services to be healthy
         run: |
