@@ -26,7 +26,11 @@ jobs:
       - name: Generate .env file from repository variables
         run: |
           echo "Generating .env file from repository variables..."
-          gh variable list --json name,value | jq -r '.[] | "\(.name)=\(.value)"' > .env
+          gh variable list --json name,value > temp_variables.json
+          for row in $(cat temp_variables.json | python -c "import sys, json; [print(f'{item['name']}={item['value']}') for item in json.load(sys.stdin)]"); do
+            echo "$row" >> .env
+          done
+          rm temp_variables.json
           echo ".env file generated."
 
       - name: Build remaining images with docker compose
