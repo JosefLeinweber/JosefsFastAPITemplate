@@ -32,10 +32,11 @@ def env_file_to_string():
         if skip_empty_or_hashtag_lines(line):
             pass
         else:
-            env_var_as_string += f"{line.rstrip()},"
+            env_var_as_string += f"{line.rstrip()}\n"
 
     return env_var_as_string[:-1]
 
 
 if __name__ == "__main__":
-    upload_string_as_secret("ENV_VARIABLES", env_file_to_string())
+    # upload_string_as_secret("ENV_VARIABLES", env_file_to_string())
+    print(env_file_to_string())

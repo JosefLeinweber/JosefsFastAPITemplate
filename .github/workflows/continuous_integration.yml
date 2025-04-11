@@ -29,11 +29,6 @@ jobs:
       - name: Generate .env file from secret
         run: echo "${{ secrets.ENV_VARIABLES }}" > .env
 
-      
-      - name: Read POSTGRES_USERNAME from .env file and print it
-        id: read_env
-        run: |
-          echo "POSTGRES_USERNAME=$(grep POSTGRES_USERNAME .env | cut -d '=' -f2)" >> $GITHUB_ENV
 
       - name: Build docker compose
         run: docker compose build
