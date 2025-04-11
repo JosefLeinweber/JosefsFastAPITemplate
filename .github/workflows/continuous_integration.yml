@@ -36,24 +36,7 @@ jobs:
           ENV_FILE: ${{ secrets.ENV_FILE }}
         run: |
           echo ".env file from repository variables..."
-          echo "ENV_FILE=${{ secrets.ENV_FILE }}" >> .env
-
-      - name: Validate .env file
-        run: |
-          echo "Validating .env file..."
-          if [ ! -f .env ]; then
-            echo ".env file not found!"
-            exit 1
-          fi
-          if [ ! -s .env ]; then
-            echo ".env file is empty!"
-            exit 1
-          fi
-
-          echo ".env file is valid."
-          echo "Contents of .env file:"
-          cat .env
-
+          echo "${{ secrets.ENV_FILE }}" > .env
 
       - name: Build remaining images with docker compose
         run: docker compose build
