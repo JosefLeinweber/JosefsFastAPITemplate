@@ -13,7 +13,7 @@ from src.models.schemas.account_schema import AccountInAuthentication, AccountIn
 async def create(account: AccountInAuthentication, db_session: SQLAlchemyAsyncSession) -> Account:
     loguru.logger.info("* creating new account")
     # TODO: dict() is DeprecationWarning
-    new_account = Account(**account.dict())
+    new_account = Account(**account.model_dump())
     try:
         await _check_account_details_are_unique(account=account, db_session=db_session)
         db_session.add(instance=new_account)
@@ -54,7 +54,6 @@ async def get_by_id(id: int, db_session: SQLAlchemyAsyncSession) -> AccountOut:
         raise fastapi.HTTPException(status_code=500, detail=str(e))
 
 
-# TODO: ensure that this function works
 async def update_by_id(id: int, account: AccountInUpdate, db_session: SQLAlchemyAsyncSession) -> AccountOut:
     loguru.logger.info("* updating account by id")
     update_data = account.dict(exclude_unset=True)

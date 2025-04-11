@@ -13,7 +13,6 @@ from src.utility.database.db_class import db
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     """
     Dependency function to provide an async database session.
-    Ensures proper session lifecycle management.
     """
     async with db.async_session() as session:
         try:
@@ -22,6 +21,3 @@ async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
             loguru.logger.error(f"Exception in async session: {exception}")
             await session.rollback()
             raise
-
-
-# randomg
