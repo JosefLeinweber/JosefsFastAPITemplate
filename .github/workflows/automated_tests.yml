@@ -1,12 +1,7 @@
-name: 'Continous Integration'
+name: 'Automated Tests'
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - 'feature/*'
-      - 'fix/*'
-      - 'refactor/*'
   pull_request:
     branches:
       - 'trunk'
