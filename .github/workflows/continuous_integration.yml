@@ -18,7 +18,9 @@ jobs:
 
     permissions:
       actions: read
-      contents: write  # Ensure permission to write the .env file
+      contents: write
+      secrets: read
+      variables: read
 
     steps:
       - name: Checkout repository
