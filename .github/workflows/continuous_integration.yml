@@ -16,9 +16,6 @@ jobs:
     name: 'Build and Start docker compose'
     runs-on: ubuntu-latest
 
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -35,6 +32,8 @@ jobs:
           done
           rm temp_variables.json
           echo ".env file generated."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build remaining images with docker compose
         run: docker compose build --env-file .env
