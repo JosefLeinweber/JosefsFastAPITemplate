@@ -57,7 +57,8 @@ jobs:
         
       - name: Run tests
         run: |
-          docker exec $(docker ps -qf "name=web") pytest --disable-warnings -v tests/ > result.log
+          docker exec $(docker ps -qf "name=web") pytest > result.log
+          echo "$(<result.log )"
           if grep -q "failed" result.log; then
             echo "Tests failed. Exiting."
             exit 1
@@ -65,7 +66,6 @@ jobs:
             echo "Tests passed."
           fi
           echo "Test results:"
-          cat result.log
 
           rm result.log
         
