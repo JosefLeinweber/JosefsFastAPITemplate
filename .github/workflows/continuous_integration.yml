@@ -16,6 +16,10 @@ jobs:
     name: 'Build and Start docker compose'
     runs-on: ubuntu-latest
 
+    permissions:
+      actions: read
+      contents: write  # Ensure permission to write the .env file
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
