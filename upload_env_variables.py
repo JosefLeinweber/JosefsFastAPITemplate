@@ -2,52 +2,40 @@ import os
 import subprocess
 
 
-def upload_env_file_as_secret(env_file_path):
-    """
-    Uploads variables from a .env file to the GitHub repository as repository secrets using the GitHub CLI.
-    """
-    if not os.path.exists(env_file_path):
-        print(f"Error: {env_file_path} does not exist.")
-        return
-
+def upload_string_as_secret(secret_name, secret_value):
     try:
-
-        subprocess.run(
-            ["gh", "secret", "set", "ENV_FILE", "--body", env_file_path],
-            check=True,
-        )
-        print(f"Uploaded {env_file_path} as a secret.")
-    except subprocess.CalledProcessError as e:
-        print(f"Failed to upload {env_file_path}: {e}")
-
-
-def delete_all_variables():
-    """
-    Deletes all repository variables using the GitHub CLI.
-    """
-
-    try:
-        # List all secrets and delete them one by one
+        # Use the `gh` command to create or update the secret
         result = subprocess.run(
-            ["gh", "variable", "list"],
+            ["gh", "secret", "set", secret_name, "--body", secret_value],
+            check=True,
             capture_output=True,
             text=True,
-            check=True,
         )
-        variables = result.stdout.splitlines()
-
-        for variable in variables:
-            variable_name = variable.split()[0]  # Get the name of the secret
-            subprocess.run(
-                ["gh", "variable", "delete", variable_name],
-                check=True,
-            )
-            print(f"Deleted: {variable_name}")
+        print(f"Secret '{secret_name}' uploaded successfully.")
     except subprocess.CalledProcessError as e:
-        print(f"Failed to delete secrets: {e}")
+        print(f"Error uploading secret '{secret_name}': {e.stderr}")
+
+
+def skip_empty_or_hashtag_lines(line):
+    if "#" in line:
+        return True
+    if len(line) < 4:
+        return True
+    return False
+
+
+def env_file_to_string():
+    file = open(".env", "r")
+    lines_of_file = file.readlines()
+    env_var_as_string = ""
+    for line in lines_of_file:
+        if skip_empty_or_hashtag_lines(line):
+            pass
+        else:
+            env_var_as_string += f"{line.rstrip()},"
+
+    return env_var_as_string[:-1]
 
 
 if __name__ == "__main__":
-    env_file_path = ".env"
-    upload_env_file_as_secret(env_file_path)
-    # delete_all_variables()
+    upload_string_as_secret("ENV_VARIABLES", env_file_to_string())
