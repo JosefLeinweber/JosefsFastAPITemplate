@@ -29,12 +29,7 @@ JosefsFastAPITemplate is a boilerplate repository designed to help developers qu
     cd JosefsFastAPITemplate
     ```
 
-2. Install dependencies:
-    ```bash
-    pip install -r backend/requirements.txt
-    ```
-
-3. Set up environment variables:
+2. Set up environment variables:
     Create a `.env` file in the root directory and configure your environment variables.
 
 
@@ -52,18 +47,16 @@ JosefsFastAPITemplate is a boilerplate repository designed to help developers qu
 
     This will start the FastAPI application and the database services defined in the `docker-compose.yml` file in a DEV environment.
 
+- **Swagger UI**: Access the interactive API documentation at       `http://localhost:8000/docs`.
+- **Redoc**: Access the alternative API documentation at            `http://localhost:8000/redoc`.
+- **Dev DB Adminer**: Access the database admin interface at        `http://localhost:8081`.
+- **Test DB Adminer**: Access the test database admin interface at  `http://localhost:8082`.
+
 3. Stop the services:
     To stop the running containers, press `CTRL+C` or run:
     ```bash
     docker-compose down
     ```
-
-### Dev Routes
-
-- **Swagger UI**: Access the interactive API documentation at       `http://localhost:8000/docs`.
-- **Redoc**: Access the alternative API documentation at            `http://localhost:8000/redoc`.
-- **Dev DB Adminer**: Access the database admin interface at        `http://localhost:8081`.
-- **Test DB Adminer**: Access the test database admin interface at  `http://localhost:8082`.
 
 ### Running Tests in Docker
 
@@ -90,5 +83,27 @@ Pre-commit hooks can automatically format your code, check for linting errors, a
     ```bash
     pre-commit run --all-files
     ```
+
+### Continuous Integration (CI)
+
+This repository includes a CI pipeline that runs on GitHub Actions. The pipeline is triggered on every push to:
+- feature/*
+- fix/*
+- refactor/*
+And on every pull request to:
+- trunk
+
+The pipeline performs the following tasks:
+- Building the Docker images for the application and database services, based on the docker-compose.yml file.
+- Running the tests inside the Docker container.
+
+To enable the CI pipeline:
+1. Ensure you have a GitHub repository set up for your project.
+2. Upload the variables of the .env file to the GitHub repository variables with the upload_env_variables.py script
+    - Ensure you have Github CLI installed and authenticated.
+    - Run the script with the command:
+        ```bash
+        python upload_env_variables.py
+        ```
 
 ## Folder Structure
