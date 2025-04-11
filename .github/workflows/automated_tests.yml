@@ -1,0 +1,59 @@
+name: 'Automated Tests'
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - 'trunk'
+    
+jobs:
+  build:
+    name: 'Build and Start docker compose'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+        with:
+          fetch-depth: 0 # Fetch all history for all branches and tags
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Generate .env file from secret
+        run: echo "${{ secrets.ENV_VARIABLES }}" > .env
+
+      - name: Build docker compose
+        run: docker compose build 
+
+      - name: Start docker compose
+        run: ENVIRONMENT=STAGING docker compose up -d --wait --wait-timeout 60
+
+      - name: Wait for services to be healthy
+        run: |
+          echo "Waiting for services to be healthy..."
+          sleep 15 # Adjust the sleep time as needed
+          # You can also use a loop to check the health status of services if needed
+          # For example, you can use curl or wget to check if a service is up and running
+          for i in {1..5}; do
+            if curl -s http://localhost:8001/docs; then
+              echo "Service is up!"
+              break
+            else
+              echo "Service is not healthy yet. Waiting..."
+              sleep 5 # Wait for a few seconds before checking again
+            fi
+          done
+          if ! curl -s http://localhost:8001/docs; then
+            echo "Service is still not healthy after waiting. Exiting."
+            exit 1
+          fi
+        
+      - name: Run tests
+        run: |
+          docker exec $(docker ps -qf "name=web") pytest
+        
+      - name: Stop dockercompose
+        if: always()
+        run: docker compose down

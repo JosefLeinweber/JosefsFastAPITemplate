@@ -1,20 +1,23 @@
 """
-get async sesison through function
+Get async session through function with proper lifecycle management.
 """
 
 from typing import AsyncGenerator
 
 import loguru
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.utility.database.db_class import db
 
 
-async def get_async_session() -> AsyncGenerator:  # type: ignore
-    try:
-        yield db.async_session
-    except Exception as exception:
-        loguru.logger.debug(f"Exception in async session: {exception}")
-        await db.async_session().rollback()
-        raise exception
-    finally:
-        await db.async_session().close()
+async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+    """
+    Dependency function to provide an async database session.
+    """
+    async with db.async_session() as session:
+        try:
+            yield session
+        except Exception as exception:
+            loguru.logger.error(f"Exception in async session: {exception}")
+            await session.rollback()
+            raise
