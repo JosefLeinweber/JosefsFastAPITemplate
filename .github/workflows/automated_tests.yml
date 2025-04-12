@@ -7,7 +7,7 @@ on:
     
 jobs:
   build:
-    name: 'Build and Start docker compose'
+    name: 'Automated Tests'
     runs-on: ubuntu-latest
 
     steps:
