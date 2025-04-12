@@ -133,13 +133,10 @@ This template is built on [FastAPI](https://fastapi.tiangolo.com/), a modern Pyt
 
 ### Continuous Integration (CI)
 
-This repository includes a CI pipeline that runs on GitHub Actions. The pipeline is triggered on every push to:
-- `feature/*`
-- `fix/*`
-- `refactor/*`
-
-And on every pull request to:
+This repository includes a CI pipeline that runs on GitHub Actions. The pipeline is triggered on every pull request to:
 - `trunk`
+
+If only changes to .md files are made, the pipeline will return a success status without running the tests.
 
 The pipeline performs the following tasks:
 - Building Docker images for the application and database services
