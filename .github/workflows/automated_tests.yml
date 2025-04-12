@@ -12,6 +12,9 @@ jobs:
 
     steps:
 
+      - name: FAIL
+        run: exit 1
+
       - name: Checkout repository
         uses: actions/checkout@v3
 
