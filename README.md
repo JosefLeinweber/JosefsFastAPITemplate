@@ -10,19 +10,19 @@ This template is built on [FastAPI](https://fastapi.tiangolo.com/), a modern Pyt
 
 ## Key Features
 
-- **FastAPI Integration**: Pre-configured FastAPI setup for rapid development
-- **Asynchronous Architecture**: Built with async/await for high-performance, non-blocking I/O
-- **Modular Structure**: Organized folder structure for easy scalability and maintenance
-- **Environment Configuration**: Support for `.env` files to manage environment variables across different environments
-- **Database Integration**: Asynchronous PostgreSQL support with SQLAlchemy
-- **Docker Support**: Includes `Dockerfile` and `docker-compose.yml` for containerized deployment
-- **Testing Ready**: Pre-configured testing setup using `pytest`
-- **Pre-commit Hooks**: Automates code formatting, linting, and testing before committing changes
-- **Interactive API Documentation**: Swagger UI and Redoc for exploring and testing API endpoints
-- **Database Management**: Adminer for managing development and test databases through a web interface
-- **Continuous Integration (CI)**: GitHub Actions pipeline for automated testing and building
-- **Security Features**: Password strength validation, CORS configuration, secure database connections
-- **Type Safety**: Leverages Python type hints and Pydantic for data validation
+- 🚀 **FastAPI Integration**: Pre-configured FastAPI setup for rapid development
+- ⚡ **Asynchronous Architecture**: Built with async/await for high-performance, non-blocking I/O
+- 🧩 **Modular Structure**: Organized folder structure for easy scalability and maintenance
+- 🔧 **Environment Configuration**: Support for `.env` files to manage environment variables across different environments
+- 🗄️ **Database Integration**: Asynchronous PostgreSQL support with SQLAlchemy
+- 🐳 **Docker Support**: Includes `Dockerfile` and `docker-compose.yml` for containerized deployment
+- 🧪 **Testing Ready**: Pre-configured testing setup using `pytest`
+- 🔄 **Pre-commit Hooks**: Automates code formatting, linting, and testing before committing changes
+- 📚 **Interactive API Documentation**: Swagger UI and Redoc for exploring and testing API endpoints
+- 🛢️ **Database Management**: Adminer for managing development and test databases through a web interface
+- 🔄 **Continuous Integration (CI)**: GitHub Actions pipeline for automated testing and building
+- 🔒 **Security Features**: Password strength validation, CORS configuration, secure database connections
+- ✅ **Type Safety**: Leverages Python type hints and Pydantic for data validation
 
 ## Table of Contents
 - [JosefsFastAPITemplate](#josefsfastapitemplate)
