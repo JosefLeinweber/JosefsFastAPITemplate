@@ -10,6 +10,9 @@ jobs:
     name: 'Automated Tests'
     runs-on: ubuntu-latest
 
+    outputs:
+      only_docs: ${{ steps.check.outputs.only_docs }}
+
     steps:
 
       - name: Checkout repository
@@ -18,30 +21,37 @@ jobs:
         with:
           fetch-depth: 0 # Fetch all history for all branches and tags
 
-      - name: Exit successfully if only docs or README changes 
+      - name: Early exit if only docs changes
+        id: "check"
         run: |
 
           if git diff --name-only origin/trunk | grep -vE '^(docs/|README\.md)'; then
             echo "Changes found outside docs or README"
+            echo "::set-output name=only_docs::false"
             
           else
-            echo "Only docs or README changes found. Exiting."
-            exit 0
+            echo "Only changes in docs or README"
+            echo "::set-output name=only_docs::true"
           fi
 
       - name: Set up Docker Buildx
+      
         uses: docker/setup-buildx-action@v2
 
       - name: Generate .env file from secret
+        if: ${{ steps.check.outputs.only_docs == 'false' }}
         run: echo "${{ secrets.ENV_VARIABLES }}" > .env
 
       - name: Build docker compose
+        if: ${{ steps.check.outputs.only_docs == 'false' }}
         run: docker compose build 
 
       - name: Start docker compose
+        if: ${{ steps.check.outputs.only_docs == 'false' }}
         run: ENVIRONMENT=STAGING docker compose up -d --wait --wait-timeout 60
 
       - name: Wait for services to be healthy
+        if: ${{ steps.check.outputs.only_docs == 'false' }}
         run: |
           echo "Waiting for services to be healthy..."
           sleep 15 # Adjust the sleep time as needed
@@ -62,9 +72,10 @@ jobs:
           fi
         
       - name: Run tests
+        if: ${{ steps.check.outputs.only_docs == 'false' }}
         run: |
           docker exec $(docker ps -qf "name=web") pytest
         
       - name: Stop dockercompose
-        if: always()
+        if: ${{ steps.check.outputs.only_docs == 'false' }}
         run: docker compose down
