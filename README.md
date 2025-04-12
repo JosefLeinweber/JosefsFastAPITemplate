@@ -57,7 +57,7 @@ This template is built on [FastAPI](https://fastapi.tiangolo.com/), a modern Pyt
   - [Deployment Best Practices](#deployment-best-practices)
   - [Using This Template for Your Project](#using-this-template-for-your-project)
   - [Best Practices](#best-practices)
-  - [License](#license)
+  - [Acknowledgments](#acknowledgments)
 
 ## Getting Started
 
@@ -471,6 +471,5 @@ The template encourages several best practices:
 
 By following these best practices, you can build robust, maintainable web applications that scale efficiently and securely.
 
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
+## Acknowledgments
+- [Aeternails Ingenium](https://github.com/Aeternalis-Ingenium): For the original FastAPI template that inspired this project.
