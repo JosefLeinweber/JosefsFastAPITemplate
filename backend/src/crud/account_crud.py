@@ -12,7 +12,6 @@ from src.models.schemas.account_schema import AccountInAuthentication, AccountIn
 
 async def create(account: AccountInAuthentication, db_session: SQLAlchemyAsyncSession) -> Account:
     loguru.logger.info("* creating new account")
-    # TODO: dict() is DeprecationWarning
     new_account = Account(**account.model_dump())
     try:
         await _check_account_details_are_unique(account=account, db_session=db_session)
