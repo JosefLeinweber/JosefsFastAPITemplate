@@ -1,4 +1,4 @@
-![Automated Tests](https://github.com/JosefLeinweber/JosefsFastAPITemplate/actions/workflows/automated_tests.yml/badge.svg?branch=trunk)
+![Automated Tests](https://github.com/JosefLeinweber/JosefsFastAPITemplate/workflows/Automated%20Tests/badge.svg)
 
 # JosefsFastAPITemplate
 
