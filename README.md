@@ -471,5 +471,6 @@ The template encourages several best practices:
 
 By following these best practices, you can build robust, maintainable web applications that scale efficiently and securely.
 
+
 ## Acknowledgments
 - [Aeternails Ingenium](https://github.com/Aeternalis-Ingenium): For the original FastAPI template that inspired this project.
