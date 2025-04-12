@@ -6,7 +6,7 @@
 
 JosefsFastAPITemplate is a boilerplate repository designed to help developers quickly set up a FastAPI project. It provides a structured foundation for building scalable and maintainable web applications using Python and FastAPI.
 
-## Features
+## Key Features
 
 - **FastAPI Integration**: Pre-configured FastAPI setup for rapid development.
 - **Modular Structure**: Organized folder structure for easy scalability.
@@ -14,6 +14,10 @@ JosefsFastAPITemplate is a boilerplate repository designed to help developers qu
 - **Dependency Management**: Uses `pip` for managing dependencies.
 - **Docker Support**: Includes a `Dockerfile` and `docker-compose` for containerized deployment.
 - **Testing Ready**: Pre-configured testing setup using `pytest`.
+- **Pre-commit Hooks**: Automates code formatting, linting, and testing before committing changes.
+- **Interactive API Documentation**: Swagger UI and Redoc for exploring and testing API endpoints.
+- **Database Management**: Adminer for managing development and test databases through a web interface.
+- **Continuous Integration (CI)**: GitHub Actions pipeline for automated testing and building.
 
 ## Getting Started
 
@@ -34,7 +38,6 @@ JosefsFastAPITemplate is a boilerplate repository designed to help developers qu
 2. Set up environment variables:
     Create a `.env` file in the root directory and configure your environment variables.
 
-
 ### Running with Docker Compose
 
 1. Build the Docker images:
@@ -47,15 +50,13 @@ JosefsFastAPITemplate is a boilerplate repository designed to help developers qu
     ENVIRONMENT=DEV docker-compose up
     ```
 
-    This will start the FastAPI application and the database services defined in the `docker-compose.yml` file in a DEV environment.
-
-- **Swagger UI**: Access the interactive API documentation at       `http://localhost:8000/docs`.
-- **Redoc**: Access the alternative API documentation at            `http://localhost:8000/redoc`.
-- **Dev DB Adminer**: Access the database admin interface at        `http://localhost:8081`.
-- **Test DB Adminer**: Access the test database admin interface at  `http://localhost:8082`.
+    Access the following services:
+    - **Swagger UI**: `http://localhost:8000/docs`
+    - **Redoc**: `http://localhost:8000/redoc`
+    - **Dev DB Adminer**: `http://localhost:8081`
+    - **Test DB Adminer**: `http://localhost:8082`
 
 3. Stop the services:
-    To stop the running containers, press `CTRL+C` or run:
     ```bash
     docker-compose down
     ```
@@ -74,9 +75,6 @@ JosefsFastAPITemplate is a boilerplate repository designed to help developers qu
 
 ### Using Pre-commit
 
-Pre-commit helps to ensure that your code meets certain standards before committing.
-Pre-commit hooks can automatically format your code, check for linting errors, and run tests before you commit changes to your repository.
-
 1. Install pre-commit hooks:
     ```bash
     pre-commit install
@@ -89,23 +87,51 @@ Pre-commit hooks can automatically format your code, check for linting errors, a
 ### Continuous Integration (CI)
 
 This repository includes a CI pipeline that runs on GitHub Actions. The pipeline is triggered on every push to:
-- feature/*
-- fix/*
-- refactor/*
+- `feature/*`
+- `fix/*`
+- `refactor/*`
+
 And on every pull request to:
-- trunk
+- `trunk`
 
 The pipeline performs the following tasks:
-- Building the Docker images for the application and database services, based on the docker-compose.yml file.
-- Running the tests inside the Docker container.
+- Building Docker images for the application and database services.
+- Running tests inside the Docker container.
 
 To enable the CI pipeline:
 1. Ensure you have a GitHub repository set up for your project.
-2. Upload the variables of the .env file to the GitHub repository variables with the upload_env_variables.py script
-    - Ensure you have Github CLI installed and authenticated.
-    - Run the script with the command:
-        ```bash
-        python upload_env_variables.py
-        ```
+2. Upload the variables of the `.env` file to the GitHub repository variables using the `upload_env_variables.py` script:
+    ```bash
+    python upload_env_variables.py
+    ```
 
 ## Folder Structure
+
+The repository is organized as follows:
+
+- **backend/**: Contains the main application code.
+  - **src/**: Source code for the FastAPI application.
+    - **api/**: API endpoints and routes.
+      - **routes/**: Specific route handlers, e.g., `account_router.py`.
+    - **config/**: Configuration files for different environments.
+      - **settings/**: Environment-specific settings, e.g., `development.py`, `production.py`.
+    - **crud/**: CRUD operations, e.g., `account_crud.py`.
+    - **models/**: Database models and schemas.
+      - **db_tables/**: Database table definitions, e.g., `account_table.py`.
+      - **schemas/**: Pydantic schemas for data validation, e.g., `account_schema.py`.
+    - **utility/**: Utility modules for various functionalities.
+      - **database/**: Database-related utilities, e.g., `db_session.py`.
+      - **events/**: Event handlers, e.g., `event_handlers.py`.
+      - **formatters/**: Formatting utilities, e.g., `date_time.py`.
+      - **pydantic_schema/**: Base schemas for Pydantic models.
+  - **tests/**: Unit and integration tests.
+    - **router_tests/**: Tests for API routes, e.g., `test_account_router.py`.
+
+- **docker-compose.yml**: Docker Compose configuration file.
+- **example.env**: Example environment variables file.
+- **README.md**: Project documentation.
+- **upload_env_variables.py**: Script to upload environment variables to GitHub.
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
