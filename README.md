@@ -1,10 +1,10 @@
 ![Automated Tests](https://github.com/JosefLeinweber/JosefsFastAPITemplate/workflows/Automated%20Tests/badge.svg)
 
-# JosefsFastAPITemplate
+# FastAPITemplate
 
 ## Overview
 
-JosefsFastAPITemplate is a production-ready boilerplate repository designed to help developers quickly set up a FastAPI project. It provides a structured foundation for building scalable, secure, and maintainable web applications using Python and FastAPI with best practices baked in.
+FastAPITemplate is a production-ready boilerplate repository designed to help developers quickly set up a FastAPI project. It provides a structured foundation for building scalable, secure, and maintainable web applications using Python and FastAPI with best practices baked in.
 
 This template is built on [FastAPI](https://fastapi.tiangolo.com/), a modern Python web framework for building APIs with automatic interactive documentation. It incorporates asynchronous database access, environment-based configuration, Docker containerization, and robust testing capabilities.
 
@@ -25,7 +25,7 @@ This template is built on [FastAPI](https://fastapi.tiangolo.com/), a modern Pyt
 - ✅ **Type Safety**: Leverages Python type hints and Pydantic for data validation
 
 ## Table of Contents
-- [JosefsFastAPITemplate](#josefsfastapitemplate)
+- [FastAPITemplate](#fastapitemplate)
   - [Overview](#overview)
   - [Key Features](#key-features)
   - [Table of Contents](#table-of-contents)
@@ -72,8 +72,8 @@ This template is built on [FastAPI](https://fastapi.tiangolo.com/), a modern Pyt
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/JosefsFastAPITemplate.git
-    cd JosefsFastAPITemplate
+    git clone https://github.com/your-username/FastAPITemplate.git
+    cd FastAPITemplate
     ```
 
 2. Set up environment variables:
